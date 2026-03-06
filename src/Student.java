@@ -27,16 +27,12 @@ public class Student extends Person {
         System.out.print("Enter Semester: ");
         semester = scanner.nextLine();
 
-        System.out.print("Enter GPA: ");
-        gpa = scanner.nextDouble();
-        scanner.nextLine();
-
         System.out.print("Enter number of subjects: ");
         numSubjects = scanner.nextInt();
         scanner.nextLine();
 
         for (int i = 0; i < numSubjects; i++) {
-            System.out.print("Enter subject name: ");
+            System.out.print("Enter subject name for subject " + (i+1) + ": ");
             String subject = scanner.nextLine();
             subjects.add(subject);
 
