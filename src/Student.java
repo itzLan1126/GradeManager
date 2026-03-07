@@ -4,13 +4,13 @@ import java.util.Scanner;
 public class Student extends Person {
     private static final Scanner scanner = new Scanner(System.in);
     
-    public int studentId;              // 学号
-    public String semester;            // 学期
-    public ArrayList<String> subjects; // 课程列表
-    public ArrayList<Integer> grades;  // 成绩列表
-    public ArrayList<String> gradeLevels; // 等级 (A, B, C...)
+    public int studentId;
+    public String semester;
+    public ArrayList<String> subjects;
+    public ArrayList<Integer> grades;
+    public ArrayList<String> gradeLevels;
     
-    // 默认构造函数
+    // Default constructor
     public Student() {
         super();
         this.subjects = new ArrayList<>();
@@ -18,7 +18,7 @@ public class Student extends Person {
         this.gradeLevels = new ArrayList<>();
     }
     
-    // 带参数构造函数
+    // Constructor with parameters
     public Student(String username, String password, String name, int studentId, String semester) {
         super(username, password, name, "STUDENT");
         this.studentId = studentId;
@@ -28,18 +28,18 @@ public class Student extends Person {
         this.gradeLevels = new ArrayList<>();
     }
     
-    // 添加课程和成绩
+    // Add course and grade
     public void addSubjectAndGrade() {
-        System.out.print("请输入课程名称: ");
+        System.out.print("Enter course name: ");
         String subject = scanner.nextLine();
         
-        System.out.print("请输入成绩: ");
+        System.out.print("Enter grade: ");
         int grade = scanner.nextInt();
         scanner.nextLine();
         
-        // 验证成绩范围
+        // Validate grade range
         while (grade < 0 || grade > 100) {
-            System.out.print("成绩必须在 0-100 之间，请重新输入: ");
+            System.out.print("Grade must be between 0-100, please re-enter: ");
             grade = scanner.nextInt();
             scanner.nextLine();
         }
@@ -48,10 +48,10 @@ public class Student extends Person {
         grades.add(grade);
         gradeLevels.add(calculateGradeLevel(grade));
         
-        System.out.println("课程 " + subject + " 成绩 " + grade + " (" + calculateGradeLevel(grade) + ") 已添加！");
+        System.out.println("Course " + subject + " grade " + grade + " (" + calculateGradeLevel(grade) + ") added!");
     }
     
-    // 计算等级
+    // Calculate grade level
     public static String calculateGradeLevel(int grade) {
         if (grade >= 95) {
             return "A+";
@@ -68,7 +68,7 @@ public class Student extends Person {
         }
     }
     
-    // 计算 GPA
+    // Calculate GPA
     public double calculateGPA() {
         if (grades.isEmpty()) {
             return 0.0;
@@ -81,7 +81,7 @@ public class Student extends Person {
         return total / grades.size();
     }
     
-    // 将分数转换为 GPA 点数
+    // Convert grade to GPA points
     private static double gradeToGPA(int grade) {
         if (grade >= 95) {
             return 4.0;
@@ -98,18 +98,18 @@ public class Student extends Person {
         }
     }
     
-    // 显示学生成绩
+    // Display student grades
     public void displayGrades() {
-        System.out.println("\n========== 学生成绩 ==========");
-        System.out.println("学号: " + studentId);
-        System.out.println("姓名: " + name);
-        System.out.println("学期: " + semester);
+        System.out.println("\n========== Student Grades ==========");
+        System.out.println("Student ID: " + studentId);
+        System.out.println("Name: " + name);
+        System.out.println("Semester: " + semester);
         System.out.println("-----------------------------");
         
         if (subjects.isEmpty()) {
-            System.out.println("暂无成绩记录");
+            System.out.println("No grade records");
         } else {
-            System.out.println("课程名称\t\t成绩\t等级");
+            System.out.println("Course\t\t\tGrade\tLevel");
             System.out.println("-----------------------------");
             for (int i = 0; i < subjects.size(); i++) {
                 System.out.println(subjects.get(i) + "\t\t" + grades.get(i) + "\t" + gradeLevels.get(i));
@@ -119,26 +119,26 @@ public class Student extends Person {
         }
     }
     
-    // 添加学生信息（老师功能）
+    // Add student info (teacher function)
     public void addStudentInfo() {
-        System.out.print("请输入学号: ");
+        System.out.print("Enter Student ID: ");
         studentId = scanner.nextInt();
         scanner.nextLine();
         
-        System.out.print("请输入用户名: ");
+        System.out.print("Enter username: ");
         username = scanner.nextLine();
         
-        System.out.print("请输入密码: ");
+        System.out.print("Enter password: ");
         password = scanner.nextLine();
         
-        System.out.print("请输入姓名: ");
+        System.out.print("Enter name: ");
         name = scanner.nextLine();
         
-        System.out.print("请输入学期: ");
+        System.out.print("Enter semester: ");
         semester = scanner.nextLine();
         
         role = "STUDENT";
         
-        System.out.println("学生信息已添加！");
+        System.out.println("Student information added!");
     }
 }
