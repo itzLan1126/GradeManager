@@ -1,0 +1,3 @@
+# username,password,name,role,studentId
+teacher1,pass123,张老师,TEACHER,0,
+student1,pass123,李同学,STUDENT,1001,2024-Fall

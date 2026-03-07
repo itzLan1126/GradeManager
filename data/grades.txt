@@ -1,0 +1,3 @@
+# studentId,semester,subject,grade
+1001,2024-Fall,AP Calculus AB,95
+1001,2024-Fall,AP Computer Science A,88
