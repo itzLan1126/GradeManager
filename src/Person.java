@@ -15,6 +15,34 @@ public class Person {
     private static ArrayList<Student> students = new ArrayList<>();
     private static Person currentUser = null;
     
+    // CLI Formatting Utilities
+    public static final int CLI_WIDTH = 56;
+
+    public static void printSeparator(char c) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < CLI_WIDTH; i++) {
+            sb.append(c);
+        }
+        System.out.println(sb.toString());
+    }
+
+    public static void printHeader(String title) {
+        System.out.println();
+        printSeparator('=');
+        int padding = (CLI_WIDTH - title.length()) / 2;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < padding; i++) sb.append(" ");
+        sb.append(title);
+        System.out.println(sb.toString());
+        printSeparator('=');
+    }
+
+    public static String truncate(String str, int length) {
+        if (str == null) return "";
+        if (str.length() <= length) return str;
+        return str.substring(0, length - 3) + "...";
+    }
+    
     // Default constructor
     public Person() {
     }
@@ -49,52 +77,53 @@ public class Person {
     
     // Login method
     public static Person login(ArrayList<Person> users) {
-        System.out.println("\n========== Login System ==========");
-        System.out.print("Enter username: ");
+        printHeader("Login System");
+        System.out.print("  Enter username: ");
         String inputUsername = scanner.nextLine();
-        System.out.print("Enter password: ");
+        System.out.print("  Enter password: ");
         String inputPassword = scanner.nextLine();
         
         for (Person user : users) {
             if (user != null && user.username != null) {
                 if (user.username.equals(inputUsername) && user.password.equals(inputPassword)) {
-                    System.out.println("Login successful! Welcome, " + user.name + " (" + user.role + ")");
+                    System.out.println("\n  [SUCCESS] Login successful!");
+                    System.out.println("  Welcome, " + truncate(user.name, 20) + " (" + user.role + ")");
                     return user;
                 }
             }
         }
-        System.out.println("Invalid username or password!");
+        System.out.println("\n  [ERROR] Invalid username or password!");
         return null;
     }
     
     // Register new user
     public static Person registerUser() {
-        System.out.println("\n======== Register New User ========");
-        System.out.print("Enter username: ");
+        printHeader("Register New User");
+        System.out.print("  Enter username: ");
         String username = scanner.nextLine();
-        System.out.print("Enter password: ");
+        System.out.print("  Enter password: ");
         String password = scanner.nextLine();
-        System.out.print("Enter name: ");
+        System.out.print("  Enter name: ");
         String name = scanner.nextLine();
         
-        System.out.print("Enter role (TEACHER/STUDENT): ");
+        System.out.print("  Enter role (TEACHER/STUDENT): ");
         String role = scanner.nextLine().toUpperCase();
         
         while (!role.equals("TEACHER") && !role.equals("STUDENT")) {
-            System.out.print("Invalid role. Please enter TEACHER or STUDENT: ");
+            System.out.print("  [ERROR] Invalid role. Please enter TEACHER or STUDENT: ");
             role = scanner.nextLine().toUpperCase();
         }
         
         Person newUser = new Person(username, password, name, role);
-        System.out.println("Registration successful!");
+        System.out.println("\n  [SUCCESS] Registration successful!");
         return newUser;
     }
     
     // Display user information
     public void displayInfo() {
-        System.out.println("Username: " + username);
-        System.out.println("Name: " + name);
-        System.out.println("Role: " + role);
+        System.out.println("  Username: " + truncate(username, CLI_WIDTH - 15));
+        System.out.println("  Name    : " + truncate(name, CLI_WIDTH - 15));
+        System.out.println("  Role    : " + role);
     }
     
     // Check if teacher
@@ -144,13 +173,12 @@ public class Person {
     
     // Show login menu
     private static void showLoginMenu() {
-        System.out.println("\n==================================");
-        System.out.println("    AP Grade Management System");
-        System.out.println("==================================");
-        System.out.println("1. Login");
-        System.out.println("2. Register New User");
-        System.out.println("3. Exit System");
-        System.out.print("Please choose: ");
+        printHeader("AP Grade Management System");
+        System.out.println("  1. Login");
+        System.out.println("  2. Register New User");
+        System.out.println("  3. Exit System");
+        printSeparator('-');
+        System.out.print("  Please choose: ");
         
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -167,10 +195,10 @@ public class Person {
                     newStudent.password = newUser.password;
                     newStudent.name = newUser.name;
                     newStudent.role = newUser.role;
-                    System.out.print("Enter Student ID: ");
+                    System.out.print("  Enter Student ID: ");
                     newStudent.studentId = scanner.nextInt();
                     scanner.nextLine();
-                    System.out.print("Enter Semester: ");
+                    System.out.print("  Enter Semester: ");
                     newStudent.semester = scanner.nextLine();
                     students.add(newStudent);
                 }
@@ -178,26 +206,26 @@ public class Person {
                 saveData();
                 break;
             case 3:
-                System.out.println("Thank you for using the system. Goodbye!");
+                System.out.println("\n  Thank you for using the system. Goodbye!");
                 System.exit(0);
             default:
-                System.out.println("Invalid choice, please try again!");
+                System.out.println("\n  [ERROR] Invalid choice, please try again!");
         }
     }
     
     // Show teacher menu
     private static void showTeacherMenu() {
-        System.out.println("\n==================================");
-        System.out.println("           Teacher Menu");
-        System.out.println("==================================");
-        System.out.println("Welcome, " + currentUser.name);
-        System.out.println("1. Add Student Information");
-        System.out.println("2. Add Course and Grade");
-        System.out.println("3. View All Student Grades");
-        System.out.println("4. Calculate Student GPA");
-        System.out.println("5. Save Data");
-        System.out.println("6. Logout");
-        System.out.print("Please choose: ");
+        printHeader("Teacher Menu");
+        System.out.println("  Welcome, " + truncate(currentUser.name, CLI_WIDTH - 15));
+        printSeparator('-');
+        System.out.println("  1. Add Student Information");
+        System.out.println("  2. Add Course and Grade");
+        System.out.println("  3. View All Student Grades");
+        System.out.println("  4. Calculate Student GPA");
+        System.out.println("  5. Save Data");
+        System.out.println("  6. Logout");
+        printSeparator('-');
+        System.out.print("  Please choose: ");
         
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -220,10 +248,10 @@ public class Person {
                 break;
             case 6:
                 currentUser = null;
-                System.out.println("Logged out successfully!");
+                System.out.println("\n  [SUCCESS] Logged out successfully!");
                 break;
             default:
-                System.out.println("Invalid choice, please try again!");
+                System.out.println("\n  [ERROR] Invalid choice, please try again!");
         }
     }
     
@@ -231,14 +259,14 @@ public class Person {
     private static void showStudentMenu() {
         Student currentStudent = findStudent(currentUser.username);
         
-        System.out.println("\n==================================");
-        System.out.println("           Student Menu");
-        System.out.println("==================================");
-        System.out.println("Welcome, " + currentUser.name);
-        System.out.println("1. View My Grades");
-        System.out.println("2. View My GPA");
-        System.out.println("3. Logout");
-        System.out.print("Please choose: ");
+        printHeader("Student Menu");
+        System.out.println("  Welcome, " + truncate(currentUser.name, CLI_WIDTH - 15));
+        printSeparator('-');
+        System.out.println("  1. View My Grades");
+        System.out.println("  2. View My GPA");
+        System.out.println("  3. Logout");
+        printSeparator('-');
+        System.out.print("  Please choose: ");
         
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -248,52 +276,54 @@ public class Person {
                 if (currentStudent != null) {
                     currentStudent.displayGrades();
                 } else {
-                    System.out.println("Cannot find student information!");
+                    System.out.println("\n  [ERROR] Cannot find student information!");
                 }
                 break;
             case 2:
                 if (currentStudent != null) {
-                    System.out.println("Your GPA: " + String.format("%.2f", currentStudent.calculateGPA()));
+                    System.out.println("\n  Your GPA: " + String.format("%.2f", currentStudent.calculateGPA()));
                 } else {
-                    System.out.println("Cannot find student information!");
+                    System.out.println("\n  [ERROR] Cannot find student information!");
                 }
                 break;
             case 3:
                 currentUser = null;
-                System.out.println("Logged out successfully!");
+                System.out.println("\n  [SUCCESS] Logged out successfully!");
                 break;
             default:
-                System.out.println("Invalid choice, please try again!");
+                System.out.println("\n  [ERROR] Invalid choice, please try again!");
         }
     }
     
     // Add student
     private static void addStudent() {
+        printHeader("Add Student");
         Student newStudent = new Student();
         newStudent.addStudentInfo();
         
         for (Student s : students) {
             if (s.studentId == newStudent.studentId) {
-                System.out.println("Student ID already exists!");
+                System.out.println("\n  [ERROR] Student ID already exists!");
                 return;
             }
         }
         
         students.add(newStudent);
         users.add(newStudent);
-        System.out.println("Student added successfully!");
+        System.out.println("\n  [SUCCESS] Student added successfully!");
         saveData();
     }
     
     // Add grade
     private static void addGrade() {
-        System.out.print("Enter Student ID: ");
+        printHeader("Add Course and Grade");
+        System.out.print("  Enter Student ID: ");
         int studentId = scanner.nextInt();
         scanner.nextLine();
         
         Student targetStudent = findStudentById(studentId);
         if (targetStudent == null) {
-            System.out.println("Student not found!");
+            System.out.println("\n  [ERROR] Student not found!");
             return;
         }
         
@@ -303,31 +333,32 @@ public class Person {
     
     // View all grades
     private static void viewAllGrades() {
+        printHeader("All Student Grades");
         if (students.isEmpty()) {
-            System.out.println("No student records!");
+            System.out.println("  No student records!");
             return;
         }
         
         for (Student student : students) {
             student.displayGrades();
-            System.out.println();
         }
     }
     
     // Calculate GPA
     private static void calculateStudentGPA() {
-        System.out.print("Enter Student ID: ");
+        printHeader("Calculate Student GPA");
+        System.out.print("  Enter Student ID: ");
         int studentId = scanner.nextInt();
         scanner.nextLine();
         
         Student targetStudent = findStudentById(studentId);
         if (targetStudent == null) {
-            System.out.println("Student not found!");
+            System.out.println("\n  [ERROR] Student not found!");
             return;
         }
         
-        System.out.println("Student: " + targetStudent.name);
-        System.out.println("GPA: " + String.format("%.2f", targetStudent.calculateGPA()));
+        System.out.println("\n  Student: " + truncate(targetStudent.name, CLI_WIDTH - 15));
+        System.out.println("  GPA    : " + String.format("%.2f", targetStudent.calculateGPA()));
     }
     
     // Find student by username
@@ -367,9 +398,9 @@ public class Person {
                 }
             }
             writer.close();
-            System.out.println("User data saved!");
+            System.out.println("  [INFO] User data saved!");
         } catch (IOException e) {
-            System.out.println("Failed to save user data: " + e.getMessage());
+            System.out.println("  [ERROR] Failed to save user data: " + e.getMessage());
         }
     }
     
@@ -408,11 +439,11 @@ public class Person {
                 }
             }
             reader.close();
-            System.out.println("User data loaded!");
+            System.out.println("  [INFO] User data loaded!");
         } catch (IOException e) {
-            System.out.println("Failed to load user data: " + e.getMessage());
+            System.out.println("  [ERROR] Failed to load user data: " + e.getMessage());
         } catch (NumberFormatException e) {
-            System.out.println("User data format error: " + e.getMessage());
+            System.out.println("  [ERROR] User data format error: " + e.getMessage());
         }
         
         return users;
@@ -431,9 +462,9 @@ public class Person {
                 }
             }
             writer.close();
-            System.out.println("Grade data saved!");
+            System.out.println("  [INFO] Grade data saved!");
         } catch (IOException e) {
-            System.out.println("Failed to save grade data: " + e.getMessage());
+            System.out.println("  [ERROR] Failed to save grade data: " + e.getMessage());
         }
     }
     
@@ -471,11 +502,11 @@ public class Person {
                 }
             }
             reader.close();
-            System.out.println("Grade data loaded!");
+            System.out.println("  [INFO] Grade data loaded!");
         } catch (IOException e) {
-            System.out.println("Failed to load grade data: " + e.getMessage());
+            System.out.println("  [ERROR] Failed to load grade data: " + e.getMessage());
         } catch (NumberFormatException e) {
-            System.out.println("Grade data format error: " + e.getMessage());
+            System.out.println("  [ERROR] Grade data format error: " + e.getMessage());
         }
     }
 }
