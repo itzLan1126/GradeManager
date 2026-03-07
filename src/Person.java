@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+// Base class for users in the grade management system
 public class Person {
     public String username;
     public String password;
@@ -14,9 +15,11 @@ public class Person {
     private static ArrayList<Student> students = new ArrayList<>();
     private static Person currentUser = null;
     
+    // Default constructor
     public Person() {
     }
     
+    // Parameterized constructor
     public Person(String username, String password, String name, String role) {
         this.username = username;
         this.password = password;
@@ -66,7 +69,7 @@ public class Person {
     
     // Register new user
     public static Person registerUser() {
-        System.out.println("\n========== Register New User ==========");
+        System.out.println("\n======== Register New User ========");
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
@@ -123,10 +126,10 @@ public class Person {
     
     // Initialize test data
     private static void initializeTestData() {
-        Person teacher = new Person("teacher1", "pass123", "Mr. Zhang", "TEACHER");
+        Person teacher = new Person("teacher1", "pass123", "Mr. Lan", "TEACHER");
         users.add(teacher);
         
-        Student student = new Student("student1", "pass123", "Li Tongxue", 1001, "2024-Fall");
+        Student student = new Student("student1", "pass123", "James", 1001, "2026-Fall");
         student.subjects.add("AP Calculus AB");
         student.grades.add(95);
         student.gradeLevels.add("A+");
@@ -141,9 +144,9 @@ public class Person {
     
     // Show login menu
     private static void showLoginMenu() {
-        System.out.println("\n=================================");
+        System.out.println("\n==================================");
         System.out.println("    AP Grade Management System");
-        System.out.println("=================================");
+        System.out.println("==================================");
         System.out.println("1. Login");
         System.out.println("2. Register New User");
         System.out.println("3. Exit System");
@@ -184,9 +187,9 @@ public class Person {
     
     // Show teacher menu
     private static void showTeacherMenu() {
-        System.out.println("\n=================================");
-        System.out.println("    Teacher Menu");
-        System.out.println("=================================");
+        System.out.println("\n==================================");
+        System.out.println("           Teacher Menu");
+        System.out.println("==================================");
         System.out.println("Welcome, " + currentUser.name);
         System.out.println("1. Add Student Information");
         System.out.println("2. Add Course and Grade");
@@ -228,9 +231,9 @@ public class Person {
     private static void showStudentMenu() {
         Student currentStudent = findStudent(currentUser.username);
         
-        System.out.println("\n=================================");
-        System.out.println("    Student Menu");
-        System.out.println("=================================");
+        System.out.println("\n==================================");
+        System.out.println("           Student Menu");
+        System.out.println("==================================");
         System.out.println("Welcome, " + currentUser.name);
         System.out.println("1. View My Grades");
         System.out.println("2. View My GPA");

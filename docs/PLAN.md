@@ -1,72 +1,72 @@
-# AP 成绩管理系统 - 简化版 (课堂项目)
+# AP Grade Management System
 
-## 项目概述
+## Project Overview
 
-这是一个简单的 AP CSA 课堂项目，用于管理国际学校学生的 AP 课程成绩。
+This is a simple AP CSA classroom project for managing AP course grades for international school students.
 
-## 技术规格
+## Technical Specifications
 
-- **编程语言**: Java
-- **用户界面**: 命令行界面 (CLI)
-- **数据存储**: TXT 文本文件
-- **核心类**: Person, Student (仅两个类)
+- **Programming Language**: Java
+- **User Interface**: Command Line Interface (CLI)
+- **Data Storage**: TXT text file
+- **Core Classes**: Person, Student (only two classes)
 
-## 数据模型
+## Data Model
 
-### Person 类 (用户)
+### Person Class (User)
 
 ```java
 public class Person {
-    public String username;    // 用户名
-    public String password;    // 密码
-    public String name;         // 姓名
-    public String role;        // 角色: TEACHER / STUDENT
+    public String username;    // Username
+    public String password;    // Password
+    public String name;         // Name
+    public String role;        // Role: TEACHER / STUDENT
 }
 ```
 
-### Student 类 (学生)
+### Student Class
 
 ```java
 public class Student extends Person {
-    public int studentId;              // 学号
-    public String semester;            // 学期
-    public ArrayList<String> subjects; // 课程列表
-    public ArrayList<Integer> grades;  // 成绩列表
-    public ArrayList<String> gradeLevels; // 等级 (A, B, C...)
+    public int studentId;              // Student ID
+    public String semester;            // Semester
+    public ArrayList<String> subjects; // Course list
+    public ArrayList<Integer> grades;  // Grade list
+    public ArrayList<String> gradeLevels; // Grade levels (A, B, C...)
 }
 ```
 
-## 功能列表
+## Feature List
 
-### 老师功能
+### Teacher Features
 
-1. 登录系统
-2. 添加学生信息
-3. 添加课程和成绩
-4. 查看所有学生成绩
-5. 计算学生 GPA
+1. Login to system
+2. Add student information
+3. Add courses and grades
+4. View all student grades
+5. Calculate student GPA
 
-### 学生功能
+### Student Features
 
-1. 登录系统
-2. 查看自己的成绩
-3. 查看自己的 GPA
+1. Login to system
+2. View own grades
+3. View own GPA
 
-## 数据文件格式 (data.txt)
+## Data File Format (data.txt)
 
 ```
-# 用户数据格式
+# User data format
 username,password,name,role,studentId
-teacher1,pass123,张老师,TEACHER,0
-student1,pass123,李同学,STUDENT,1001
+teacher1,pass123,Mr. Zhang,TEACHER,0
+student1,pass123,Li Tongxue,STUDENT,1001
 
-# 成绩数据格式
+# Grade data format
 studentId,semester,subject,grade
 1001,2024-Fall,AP Calculus AB,95
 1001,2024-Fall,AP Computer Science A,88
 ```
 
-## GPA计算
+## GPA Calculation
 
 - A+ = 4.0 (95-100)
 - A = 4.0 (85-94)
@@ -75,12 +75,12 @@ studentId,semester,subject,grade
 - D = 1.0 (60-64)
 - F = 0.0 (<60)
 
-GPA = 所有课程分数之和 / 课程数量
+GPA = Sum of all course scores / Number of courses
 
-## 开发计划
+## Development Plan
 
-1. **第一阶段**: 修改 Person 类，添加用户角色和登录功能
-2. **第二阶段**: 扩展 Student 类，添加更多成绩管理功能
-3. **第三阶段**: 实现 TXT 文件数据持久化
-4. **第四阶段**: 实现命令行菜单界面
-5. **第五阶段**: 测试和完善
+1. **Phase 1**: Modify Person class, add user roles and login functionality
+2. **Phase 2**: Extend Student class, add more grade management features
+3. **Phase 3**: Implement TXT file data persistence
+4. **Phase 4**: Implement command line menu interface
+5. **Phase 5**: Testing and refinement
