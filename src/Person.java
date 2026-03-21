@@ -15,34 +15,6 @@ public class Person {
     private static ArrayList<Student> students = new ArrayList<>();
     private static Person currentUser = null;
     
-    // CLI Formatting Utilities
-    public static final int CLI_WIDTH = 56;
-
-    public static void printSeparator(char c) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < CLI_WIDTH; i++) {
-            sb.append(c);
-        }
-        System.out.println(sb.toString());
-    }
-
-    public static void printHeader(String title) {
-        System.out.println();
-        printSeparator('=');
-        int padding = (CLI_WIDTH - title.length()) / 2;
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < padding; i++) sb.append(" ");
-        sb.append(title);
-        System.out.println(sb.toString());
-        printSeparator('=');
-    }
-
-    public static String truncate(String str, int length) {
-        if (str == null) return "";
-        if (str.length() <= length) return str;
-        return str.substring(0, length - 3) + "...";
-    }
-    
     // Default constructor
     public Person() {
     }
@@ -67,7 +39,10 @@ public class Person {
                 showLoginMenu();
             } else {
                 if (currentUser.isTeacher()) {
-                    showTeacherMenu();
+                    boolean logout = Teacher.showTeacherMenu(currentUser, students);
+                    if (logout) {
+                        currentUser = null;
+                    }
                 } else {
                     showStudentMenu();
                 }
@@ -77,7 +52,7 @@ public class Person {
     
     // Login method
     public static Person login(ArrayList<Person> users) {
-        printHeader("Login System");
+        CLI.printHeader("Login System");
         System.out.print("  Enter username: ");
         String inputUsername = scanner.nextLine();
         System.out.print("  Enter password: ");
@@ -87,7 +62,7 @@ public class Person {
             if (user != null && user.username != null) {
                 if (user.username.equals(inputUsername) && user.password.equals(inputPassword)) {
                     System.out.println("\n  [SUCCESS] Login successful!");
-                    System.out.println("  Welcome, " + truncate(user.name, 20) + " (" + user.role + ")");
+                    System.out.println("  Welcome, " + CLI.truncate(user.name, 20) + " (" + user.role + ")");
                     return user;
                 }
             }
@@ -98,7 +73,7 @@ public class Person {
     
     // Register new user
     public static Person registerUser() {
-        printHeader("Register New User");
+        CLI.printHeader("Register New User");
         System.out.print("  Enter username: ");
         String username = scanner.nextLine();
         System.out.print("  Enter password: ");
@@ -121,8 +96,8 @@ public class Person {
     
     // Display user information
     public void displayInfo() {
-        System.out.println("  Username: " + truncate(username, CLI_WIDTH - 15));
-        System.out.println("  Name    : " + truncate(name, CLI_WIDTH - 15));
+        System.out.println("  Username: " + CLI.truncate(username, CLI.CLI_WIDTH - 15));
+        System.out.println("  Name    : " + CLI.truncate(name, CLI.CLI_WIDTH - 15));
         System.out.println("  Role    : " + role);
     }
     
@@ -173,11 +148,11 @@ public class Person {
     
     // Show login menu
     private static void showLoginMenu() {
-        printHeader("AP Grade Management System");
+        CLI.printHeader("AP Grade Management System");
         System.out.println("  1. Login");
         System.out.println("  2. Register New User");
         System.out.println("  3. Exit System");
-        printSeparator('-');
+        CLI.printSeparator('-');
         System.out.print("  Please choose: ");
         
         int choice = scanner.nextInt();
@@ -213,59 +188,17 @@ public class Person {
         }
     }
     
-    // Show teacher menu
-    private static void showTeacherMenu() {
-        printHeader("Teacher Menu");
-        System.out.println("  Welcome, " + truncate(currentUser.name, CLI_WIDTH - 15));
-        printSeparator('-');
-        System.out.println("  1. Add Student Information");
-        System.out.println("  2. Add Course and Grade");
-        System.out.println("  3. View All Student Grades");
-        System.out.println("  4. Calculate Student GPA");
-        System.out.println("  5. Save Data");
-        System.out.println("  6. Logout");
-        printSeparator('-');
-        System.out.print("  Please choose: ");
-        
-        int choice = scanner.nextInt();
-        scanner.nextLine();
-        
-        switch (choice) {
-            case 1:
-                addStudent();
-                break;
-            case 2:
-                addGrade();
-                break;
-            case 3:
-                viewAllGrades();
-                break;
-            case 4:
-                calculateStudentGPA();
-                break;
-            case 5:
-                saveData();
-                break;
-            case 6:
-                currentUser = null;
-                System.out.println("\n  [SUCCESS] Logged out successfully!");
-                break;
-            default:
-                System.out.println("\n  [ERROR] Invalid choice, please try again!");
-        }
-    }
-    
     // Show student menu
     private static void showStudentMenu() {
         Student currentStudent = findStudent(currentUser.username);
         
-        printHeader("Student Menu");
-        System.out.println("  Welcome, " + truncate(currentUser.name, CLI_WIDTH - 15));
-        printSeparator('-');
+        CLI.printHeader("Student Menu");
+        System.out.println("  Welcome, " + CLI.truncate(currentUser.name, CLI.CLI_WIDTH - 15));
+        CLI.printSeparator('-');
         System.out.println("  1. View My Grades");
         System.out.println("  2. View My GPA");
         System.out.println("  3. Logout");
-        printSeparator('-');
+        CLI.printSeparator('-');
         System.out.print("  Please choose: ");
         
         int choice = scanner.nextInt();
@@ -293,72 +226,6 @@ public class Person {
             default:
                 System.out.println("\n  [ERROR] Invalid choice, please try again!");
         }
-    }
-    
-    // Add student
-    private static void addStudent() {
-        printHeader("Add Student");
-        Student newStudent = new Student();
-        newStudent.addStudentInfo();
-        
-        for (Student s : students) {
-            if (s.studentId == newStudent.studentId) {
-                System.out.println("\n  [ERROR] Student ID already exists!");
-                return;
-            }
-        }
-        
-        students.add(newStudent);
-        users.add(newStudent);
-        System.out.println("\n  [SUCCESS] Student added successfully!");
-        saveData();
-    }
-    
-    // Add grade
-    private static void addGrade() {
-        printHeader("Add Course and Grade");
-        System.out.print("  Enter Student ID: ");
-        int studentId = scanner.nextInt();
-        scanner.nextLine();
-        
-        Student targetStudent = findStudentById(studentId);
-        if (targetStudent == null) {
-            System.out.println("\n  [ERROR] Student not found!");
-            return;
-        }
-        
-        targetStudent.addSubjectAndGrade();
-        saveData();
-    }
-    
-    // View all grades
-    private static void viewAllGrades() {
-        printHeader("All Student Grades");
-        if (students.isEmpty()) {
-            System.out.println("  No student records!");
-            return;
-        }
-        
-        for (Student student : students) {
-            student.displayGrades();
-        }
-    }
-    
-    // Calculate GPA
-    private static void calculateStudentGPA() {
-        printHeader("Calculate Student GPA");
-        System.out.print("  Enter Student ID: ");
-        int studentId = scanner.nextInt();
-        scanner.nextLine();
-        
-        Student targetStudent = findStudentById(studentId);
-        if (targetStudent == null) {
-            System.out.println("\n  [ERROR] Student not found!");
-            return;
-        }
-        
-        System.out.println("\n  Student: " + truncate(targetStudent.name, CLI_WIDTH - 15));
-        System.out.println("  GPA    : " + String.format("%.2f", targetStudent.calculateGPA()));
     }
     
     // Find student by username

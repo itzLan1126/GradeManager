@@ -20,6 +20,7 @@ bin/
 hs_err_pid*
 
 # IDE
+.kilocode/
 .vscode/
 .idea/
 *.iml

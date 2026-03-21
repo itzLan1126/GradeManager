@@ -48,7 +48,7 @@ public class Student extends Person {
         grades.add(grade);
         gradeLevels.add(calculateGradeLevel(grade));
         
-        System.out.println("\n  [SUCCESS] Course " + truncate(subject, 20) + " grade " + grade + " (" + calculateGradeLevel(grade) + ") added!");
+        System.out.println("\n  [SUCCESS] Course " + CLI.truncate(subject, 20) + " grade " + grade + " (" + calculateGradeLevel(grade) + ") added!");
     }
     
     // Calculate grade level
@@ -101,22 +101,22 @@ public class Student extends Person {
     // Display student grades
     public void displayGrades() {
         System.out.println();
-        printSeparator('-');
+        CLI.printSeparator('-');
         System.out.println("  Student ID: " + studentId);
-        System.out.println("  Name      : " + truncate(name, CLI_WIDTH - 15));
-        System.out.println("  Semester  : " + truncate(semester, CLI_WIDTH - 15));
-        printSeparator('-');
+        System.out.println("  Name      : " + CLI.truncate(name, CLI.CLI_WIDTH - 15));
+        System.out.println("  Semester  : " + CLI.truncate(semester, CLI.CLI_WIDTH - 15));
+        CLI.printSeparator('-');
         
         if (subjects.isEmpty()) {
             System.out.println("  No grade records");
         } else {
             System.out.println(String.format("  %-30s %-10s %-10s", "Course", "Grade", "Level"));
-            printSeparator('-');
+            CLI.printSeparator('-');
             for (int i = 0; i < subjects.size(); i++) {
                 System.out.println(String.format("  %-30s %-10s %-10s", 
-                    truncate(subjects.get(i), 30), grades.get(i), gradeLevels.get(i)));
+                    CLI.truncate(subjects.get(i), 30), grades.get(i), gradeLevels.get(i)));
             }
-            printSeparator('-');
+            CLI.printSeparator('-');
             System.out.println("  GPA: " + String.format("%.2f", calculateGPA()));
         }
     }

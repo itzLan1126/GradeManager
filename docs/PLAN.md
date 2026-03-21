@@ -84,3 +84,57 @@ GPA = Sum of all course scores / Number of courses
 3. **Phase 3**: Implement TXT file data persistence
 4. **Phase 4**: Implement command line menu interface
 5. **Phase 5**: Testing and refinement
+
+---
+
+## Refactoring (Phase 6)
+
+### Reason for Refactoring
+
+The original `Person.java` class violated the Single Responsibility Principle (SRP) by combining:
+- User authentication and management
+- CLI formatting utilities
+- Teacher-specific business logic
+
+### Changes Made
+
+1. **Created `CLI.java`**: Extracted CLI formatting utilities into a dedicated utility class
+   - `CLI_WIDTH` constant
+   - `printSeparator(char c)` method
+   - `printHeader(String title)` method
+   - `truncate(String str, int length)` method
+
+2. **Created `Teacher.java`**: Extracted teacher-specific functionality into a separate class
+   - Teacher menu handling
+   - Student management (add/view)
+   - Grade management
+   - GPA calculation
+
+3. **Modified `Person.java`**: Removed extracted code, delegated to new classes
+
+4. **Modified `Student.java`**: Updated to use `CLI` class methods directly
+
+### Benefits
+
+- **Better code organization**: Each class has a clear, single responsibility
+- **Improved maintainability**: Changes to CLI formatting won't affect business logic
+- **Enhanced reusability**: CLI utilities can be used across the application
+- **Easier testing**: Each component can be tested independently
+
+### Class Structure After Refactoring
+
+```
+GradeManager/src/
+├── CLI.java         # CLI formatting utilities
+├── Person.java      # Base user class
+├── Student.java     # Student class (extends Person)
+└── Teacher.java     # Teacher class (extends Person)
+```
+
+### Risks and Mitigations
+
+| Risk | Mitigation |
+|------|------------|
+| Breaking existing functionality | Comprehensive testing after refactoring |
+| Student.java compatibility | Updated to use CLI class directly |
+| Main method entry point | Remains in Person.java, delegates to appropriate classes |

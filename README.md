@@ -28,7 +28,9 @@ This is a simple grade management system designed for AP (Advanced Placement) co
 GradeManager/
 ├── src/
 │   ├── Person.java      # Base class for users (Teacher/Student)
-│   └── Student.java     # Student class with grade management
+│   ├── Student.java     # Student class with grade management
+│   ├── Teacher.java     # Teacher class with teacher-specific functionality
+│   └── CLI.java         # CLI formatting utilities
 ├── data/
 │   ├── users.txt        # User data storage
 │   └── grades.txt       # Grade data storage
@@ -49,7 +51,7 @@ GradeManager/
 1. Compile the Java files:
 
    ```bash
-   javac src/Person.java src/Student.java
+   javac src/Person.java src/Student.java src/Teacher.java src/CLI.java
    ```
 
 2. Run the application:
@@ -104,6 +106,25 @@ Contains additional fields:
 - `subjects` - List of enrolled courses
 - `grades` - List of numeric grades
 - `gradeLevels` - Letter grades (A, B, C, etc.)
+
+### Teacher Class (extends Person)
+
+Teacher-specific functionality:
+
+- `showTeacherMenu()` - Display teacher menu and handle choices
+- `addStudent()` - Add new student information
+- `addGrade()` - Add course and grade for students
+- `viewAllGrades()` - View all student grades
+- `calculateStudentGPA()` - Calculate student GPA
+
+### CLI Class
+
+Command-line interface formatting utilities:
+
+- `CLI_WIDTH` - Console width constant (56 characters)
+- `printSeparator(char c)` - Print a separator line
+- `printHeader(String title)` - Print a centered header
+- `truncate(String str, int length)` - Truncate string with ellipsis
 
 ## License
 
