@@ -1,10 +1,10 @@
-# AP Grade Management System
+# IB Grade Management System
 
-A command-line Java application for managing AP course grades in an international school setting.
+A command-line Java application for managing IB course grades in an international school setting.
 
 ## Project Overview
 
-This is a simple grade management system designed for AP (Advanced Placement) courses. It allows teachers to manage student information and grades, while students can view their own grades and GPA.
+This is a simple grade management system designed for IB (International Baccalaureate) courses. It allows teachers to manage student information and grades, while students can view their own grades and GPA.
 
 ## Features
 
@@ -68,23 +68,24 @@ GradeManager/
 
 ## GPA Calculation
 
-| Grade Level | Score Range | GPA Points |
-| ----------- | ----------- | ---------- |
-| A+          | 95-100      | 4.0        |
-| A           | 85-94       | 4.0        |
-| B           | 75-84       | 3.0        |
-| C           | 65-74       | 2.0        |
-| D           | 60-64       | 1.0        |
-| F           | Below 60    | 0.0        |
+| IB Grade | Score Range | GPA Points |
+| -------- | ----------- | ---------- |
+| 7        | 95-100      | 4.0        |
+| 6        | 87-94       | 4.0        |
+| 5        | 77-86       | 3.5        |
+| 4        | 67-76       | 3.0        |
+| 3        | 57-66       | 2.0        |
+| 2        | 47-56       | 1.0        |
+| 1        | Below 47    | 0.0        |
 
-**GPA Formula**: Sum of all course GPA points / Number of courses
+**GPA Formula**: Weighted average of all course GPA points (HL weight: 1.2, SL weight: 1.0)
 
 ## Data Storage
 
 The system uses plain text files for data persistence:
 
 - **users.txt**: Stores user accounts (username, password, name, role, studentId, semester)
-- **grades.txt**: Stores grade records (studentId, semester, subject, grade)
+- **grades.txt**: Stores grade records (studentId, semester, subject, ibGrade, level)
 
 ## Class Structure
 
@@ -105,7 +106,8 @@ Contains additional fields:
 - `semester` - Current semester
 - `subjects` - List of enrolled courses
 - `grades` - List of numeric grades
-- `gradeLevels` - Letter grades (A, B, C, etc.)
+- `ibGrades` - IB grades (1-7 scale)
+- `courseLevels` - Course levels (HL or SL)
 
 ### Teacher Class (extends Person)
 
