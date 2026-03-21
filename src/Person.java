@@ -128,18 +128,28 @@ public class Person {
         saveGrades(students);
     }
     
-    // Initialize test data
+    // Initialize test data (IB system)
     private static void initializeTestData() {
         Person teacher = new Person("teacher1", "pass123", "Mr. Lan", "TEACHER");
         users.add(teacher);
         
         Student student = new Student("student1", "pass123", "James", 1001, "2026-Fall");
-        student.subjects.add("AP Calculus AB");
-        student.grades.add(95);
-        student.gradeLevels.add("A+");
-        student.subjects.add("AP Computer Science A");
-        student.grades.add(88);
-        student.gradeLevels.add("A");
+        // IB courses with HL/SL levels
+        student.subjects.add("Mathematics Analysis and Approaches HL");
+        student.courseLevels.add("HL");
+        student.ibGrades.add(6);
+        student.grades.add(90);  // percentage equivalent
+        
+        student.subjects.add("Physics HL");
+        student.courseLevels.add("HL");
+        student.ibGrades.add(5);
+        student.grades.add(82);  // percentage equivalent
+        
+        student.subjects.add("English A Literature SL");
+        student.courseLevels.add("SL");
+        student.ibGrades.add(6);
+        student.grades.add(90);  // percentage equivalent
+        
         users.add(student);
         students.add(student);
         
@@ -148,7 +158,7 @@ public class Person {
     
     // Show login menu
     private static void showLoginMenu() {
-        CLI.printHeader("AP Grade Management System");
+        CLI.printHeader("IB Grade Management System");
         System.out.println("  1. Login");
         System.out.println("  2. Register New User");
         System.out.println("  3. Exit System");
@@ -316,16 +326,18 @@ public class Person {
         return users;
     }
     
-    // Save grades to file
+    // Save grades to file (IB system)
     public static void saveGrades(ArrayList<Student> students) {
         try {
             new File("data").mkdirs();
             PrintWriter writer = new PrintWriter(new FileWriter(GRADE_FILE));
-            writer.println("# studentId,semester,subject,grade");
+            writer.println("# studentId,semester,subject,ibGrade,level");
             for (Student student : students) {
                 for (int i = 0; i < student.subjects.size(); i++) {
                     writer.println(student.studentId + "," + student.semester + "," + 
-                                   student.subjects.get(i) + "," + student.grades.get(i));
+                                   student.subjects.get(i) + "," + 
+                                   student.ibGrades.get(i) + "," + 
+                                   student.courseLevels.get(i));
                 }
             }
             writer.close();
@@ -335,7 +347,7 @@ public class Person {
         }
     }
     
-    // Load grades from file
+    // Load grades from file (IB system)
     public static void loadGrades(ArrayList<Student> students) {
         File file = new File(GRADE_FILE);
         
@@ -352,17 +364,32 @@ public class Person {
                 }
                 
                 String[] parts = line.split(",");
+                // IB format: studentId,semester,subject,ibGrade,level
+                // Legacy AP format: studentId,semester,subject,grade
                 if (parts.length >= 4) {
                     int studentId = Integer.parseInt(parts[0]);
                     String semester = parts[1];
                     String subject = parts[2];
-                    int grade = Integer.parseInt(parts[3]);
                     
                     for (Student student : students) {
                         if (student.studentId == studentId) {
                             student.subjects.add(subject);
-                            student.grades.add(grade);
-                            student.gradeLevels.add(Student.calculateGradeLevel(grade));
+                            
+                            if (parts.length >= 5) {
+                                // IB format: has ibGrade and level
+                                int ibGrade = Integer.parseInt(parts[3]);
+                                String level = parts[4];
+                                student.ibGrades.add(ibGrade);
+                                student.courseLevels.add(level);
+                                student.grades.add(ibToPercentage(ibGrade));
+                            } else {
+                                // Legacy AP format: convert percentage to IB
+                                int grade = Integer.parseInt(parts[3]);
+                                int ibGrade = Student.calculateIBGradeLevel(grade);
+                                student.ibGrades.add(ibGrade);
+                                student.courseLevels.add("SL");  // default to SL
+                                student.grades.add(grade);
+                            }
                             break;
                         }
                     }
@@ -374,6 +401,19 @@ public class Person {
             System.out.println("  [ERROR] Failed to load grade data: " + e.getMessage());
         } catch (NumberFormatException e) {
             System.out.println("  [ERROR] Grade data format error: " + e.getMessage());
+        }
+    }
+    
+    // Convert IB grade to percentage
+    private static int ibToPercentage(int ibGrade) {
+        switch (ibGrade) {
+            case 7: return 97;
+            case 6: return 90;
+            case 5: return 82;
+            case 4: return 72;
+            case 3: return 62;
+            case 2: return 52;
+            default: return 42;
         }
     }
 }
