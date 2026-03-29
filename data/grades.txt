@@ -1,0 +1,4 @@
+# studentId,semester,subject,ibGrade,level
+1001,2026-Fall,Mathematics Analysis and Approaches HL,6,HL
+1001,2026-Fall,Physics HL,5,HL
+1001,2026-Fall,English A Literature SL,6,SL
