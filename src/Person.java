@@ -14,44 +14,44 @@ public class Person {
     static ArrayList<Person> users = new ArrayList<>();
     private static ArrayList<Student> students = new ArrayList<>();
     private static Person currentUser = null;
-    
+
     // Getters and Setters
     public String getUsername() {
         return username;
     }
-    
+
     public void setUsername(String username) {
         this.username = username;
     }
-    
+
     public String getPassword() {
         return password;
     }
-    
+
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getRole() {
         return role;
     }
-    
+
     public void setRole(String role) {
         this.role = role;
     }
-    
+
     // Default constructor
     public Person() {
     }
-    
+
     // Parameterized constructor
     public Person(String username, String password, String name, String role) {
         this.username = username;
@@ -59,14 +59,14 @@ public class Person {
         this.name = name;
         this.role = role;
     }
-    
+
     // Main method
     public static void main(String[] args) {
         loadData();
         if (users.isEmpty()) {
             initializeTestData();
         }
-        
+
         while (true) {
             if (currentUser == null) {
                 showLoginMenu();
@@ -82,7 +82,7 @@ public class Person {
             }
         }
     }
-    
+
     // Login method
     public static Person login(ArrayList<Person> users) {
         CLI.printHeader("Login System");
@@ -90,7 +90,7 @@ public class Person {
         String inputUsername = scanner.nextLine();
         System.out.print("  Enter password: ");
         String inputPassword = scanner.nextLine();
-        
+
         for (Person user : users) {
             if (user != null && user.username != null) {
                 if (user.username.equals(inputUsername) && user.password.equals(inputPassword)) {
@@ -103,13 +103,13 @@ public class Person {
         System.out.println("\n  [ERROR] Invalid username or password!");
         return null;
     }
-    
+
     // Register new user
     public static Person registerUser() {
         CLI.printHeader("Register New User");
         System.out.print("  Enter username: ");
         String username = scanner.nextLine();
-        
+
         // Check if username already exists
         for (Person user : users) {
             if (user.username.equals(username)) {
@@ -117,42 +117,42 @@ public class Person {
                 return null;
             }
         }
-        
+
         System.out.print("  Enter password: ");
         String password = scanner.nextLine();
         System.out.print("  Enter name: ");
         String name = scanner.nextLine();
-        
+
         System.out.print("  Enter role (TEACHER/STUDENT): ");
         String role = scanner.nextLine().toUpperCase();
-        
+
         while (!role.equals("TEACHER") && !role.equals("STUDENT")) {
             System.out.print("  [ERROR] Invalid role. Please enter TEACHER or STUDENT: ");
             role = scanner.nextLine().toUpperCase();
         }
-        
+
         Person newUser = new Person(username, password, name, role);
         System.out.println("\n  [SUCCESS] Registration successful!");
         return newUser;
     }
-    
+
     // Display user information
     public void displayInfo() {
         System.out.println("  Username: " + CLI.truncate(username, CLI.CLI_WIDTH - 15));
         System.out.println("  Name    : " + CLI.truncate(name, CLI.CLI_WIDTH - 15));
         System.out.println("  Role    : " + role);
     }
-    
+
     // Check if teacher
     public boolean isTeacher() {
         return "TEACHER".equals(role);
     }
-    
+
     // Check if student
     public boolean isStudent() {
         return "STUDENT".equals(role);
     }
-    
+
     // Load data
     private static void loadData() {
         users = loadUsers();
@@ -163,41 +163,41 @@ public class Person {
         }
         loadGrades(students);
     }
-    
+
     // Save data
     public static void saveData() {
         saveUsers(users);
         saveGrades(students);
     }
-    
+
     // Initialize test data (IB system)
     private static void initializeTestData() {
         Person teacher = new Person("teacher1", "pass123", "Mr. Lan", "TEACHER");
         users.add(teacher);
-        
+
         Student student = new Student("student1", "pass123", "James", 1001, "2026-Fall");
         // IB courses with HL/SL levels
         student.subjects.add("Mathematics Analysis and Approaches HL");
         student.courseLevels.add("HL");
         student.ibGrades.add(6);
-        student.grades.add(90);  // percentage equivalent
-        
+        student.grades.add(90); // percentage equivalent
+
         student.subjects.add("Physics HL");
         student.courseLevels.add("HL");
         student.ibGrades.add(5);
-        student.grades.add(82);  // percentage equivalent
-        
+        student.grades.add(82); // percentage equivalent
+
         student.subjects.add("English A Literature SL");
         student.courseLevels.add("SL");
         student.ibGrades.add(6);
-        student.grades.add(90);  // percentage equivalent
-        
+        student.grades.add(90); // percentage equivalent
+
         users.add(student);
         students.add(student);
-        
+
         saveData();
     }
-    
+
     // Show login menu
     private static void showLoginMenu() {
         CLI.printHeader("IB Grade Management System");
@@ -206,7 +206,7 @@ public class Person {
         System.out.println("  3. Exit System");
         CLI.printSeparator('-');
         System.out.print("  Please choose: ");
-        
+
         int choice = 0;
         try {
             choice = Integer.parseInt(scanner.nextLine());
@@ -214,7 +214,7 @@ public class Person {
             System.out.println("\n  [ERROR] Please enter a valid number!");
             return;
         }
-        
+
         switch (choice) {
             case 1:
                 currentUser = Person.login(users);
@@ -235,16 +235,16 @@ public class Person {
                             System.out.println("\n  [ERROR] Invalid student ID!");
                             break;
                         }
-                        
+
                         // Check if student ID already exists
                         for (Student s : students) {
                             if (s.studentId == newStudent.studentId) {
                                 System.out.println("\n  [ERROR] Student ID already exists!");
-                                newUser = null;  // Don't add the user
+                                newUser = null; // Don't add the user
                                 break;
                             }
                         }
-                        
+
                         if (newUser != null) {
                             System.out.print("  Enter Semester: ");
                             newStudent.semester = scanner.nextLine();
@@ -262,11 +262,11 @@ public class Person {
                 System.out.println("\n  [ERROR] Invalid choice, please try again!");
         }
     }
-    
+
     // Show student menu
     private static void showStudentMenu() {
         Student currentStudent = findStudent(currentUser.username);
-        
+
         CLI.printHeader("Student Menu");
         System.out.println("  Welcome, " + CLI.truncate(currentUser.name, CLI.CLI_WIDTH - 15));
         CLI.printSeparator('-');
@@ -275,7 +275,7 @@ public class Person {
         System.out.println("  3. Logout");
         CLI.printSeparator('-');
         System.out.print("  Please choose: ");
-        
+
         int choice = 0;
         try {
             choice = Integer.parseInt(scanner.nextLine());
@@ -283,7 +283,7 @@ public class Person {
             System.out.println("\n  [ERROR] Please enter a valid number!");
             return;
         }
-        
+
         switch (choice) {
             case 1:
                 if (currentStudent != null) {
@@ -307,7 +307,7 @@ public class Person {
                 System.out.println("\n  [ERROR] Invalid choice, please try again!");
         }
     }
-    
+
     // Find student by username
     private static Student findStudent(String username) {
         for (Student s : students) {
@@ -317,7 +317,7 @@ public class Person {
         }
         return null;
     }
-    
+
     // Find student by ID
     private static Student findStudentById(int studentId) {
         for (Student s : students) {
@@ -327,7 +327,7 @@ public class Person {
         }
         return null;
     }
-    
+
     // Save users to file
     public static void saveUsers(ArrayList<Person> users) {
         try {
@@ -337,11 +337,12 @@ public class Person {
                 for (Person user : users) {
                     if (user instanceof Student) {
                         Student student = (Student) user;
-                        writer.println(user.getUsername() + "," + user.getPassword() + "," + 
-                                       user.getName() + "," + user.getRole() + "," + student.studentId + "," + student.semester);
+                        writer.println(user.getUsername() + "," + user.getPassword() + "," +
+                                user.getName() + "," + user.getRole() + "," + student.studentId + ","
+                                + student.semester);
                     } else {
-                        writer.println(user.getUsername() + "," + user.getPassword() + "," + 
-                                       user.getName() + "," + user.getRole() + ",0,");
+                        writer.println(user.getUsername() + "," + user.getPassword() + "," +
+                                user.getName() + "," + user.getRole() + ",0,");
                     }
                 }
             }
@@ -350,30 +351,30 @@ public class Person {
             System.out.println("  [ERROR] Failed to save user data: " + e.getMessage());
         }
     }
-    
+
     // Load users from file
     public static ArrayList<Person> loadUsers() {
         ArrayList<Person> users = new ArrayList<>();
         File file = new File(USER_FILE);
-        
+
         if (!file.exists()) {
             return users;
         }
-        
+
         try (BufferedReader reader = new BufferedReader(new FileReader(USER_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("#") || line.trim().isEmpty()) {
                     continue;
                 }
-                
+
                 String[] parts = line.split(",");
                 if (parts.length >= 4) {
                     String username = parts[0];
                     String password = parts[1];
                     String name = parts[2];
                     String role = parts[3];
-                    
+
                     if (role.equals("STUDENT") && parts.length >= 6) {
                         int studentId = Integer.parseInt(parts[4]);
                         String semester = parts[5];
@@ -390,10 +391,10 @@ public class Person {
         } catch (NumberFormatException e) {
             System.out.println("  [ERROR] User data format error: " + e.getMessage());
         }
-        
+
         return users;
     }
-    
+
     // Save grades to file (IB system)
     public static void saveGrades(ArrayList<Student> students) {
         try {
@@ -402,10 +403,10 @@ public class Person {
                 writer.println("# studentId,semester,subject,ibGrade,level");
                 for (Student student : students) {
                     for (int i = 0; i < student.subjects.size(); i++) {
-                        writer.println(student.studentId + "," + student.semester + "," + 
-                                       student.subjects.get(i) + "," + 
-                                       student.ibGrades.get(i) + "," + 
-                                       student.courseLevels.get(i));
+                        writer.println(student.studentId + "," + student.semester + "," +
+                                student.subjects.get(i) + "," +
+                                student.ibGrades.get(i) + "," +
+                                student.courseLevels.get(i));
                     }
                 }
             }
@@ -414,22 +415,22 @@ public class Person {
             System.out.println("  [ERROR] Failed to save grade data: " + e.getMessage());
         }
     }
-    
+
     // Load grades from file (IB system)
     public static void loadGrades(ArrayList<Student> students) {
         File file = new File(GRADE_FILE);
-        
+
         if (!file.exists()) {
             return;
         }
-        
+
         try (BufferedReader reader = new BufferedReader(new FileReader(GRADE_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("#") || line.trim().isEmpty()) {
                     continue;
                 }
-                
+
                 String[] parts = line.split(",");
                 // IB format: studentId,semester,subject,ibGrade,level
                 // Legacy AP format: studentId,semester,subject,grade
@@ -437,11 +438,11 @@ public class Person {
                     int studentId = Integer.parseInt(parts[0]);
                     String semester = parts[1];
                     String subject = parts[2];
-                    
+
                     for (Student student : students) {
                         if (student.studentId == studentId) {
                             student.subjects.add(subject);
-                            
+
                             if (parts.length >= 5) {
                                 // IB format: has ibGrade and level
                                 int ibGrade = Integer.parseInt(parts[3]);
@@ -454,7 +455,7 @@ public class Person {
                                 int grade = Integer.parseInt(parts[3]);
                                 int ibGrade = Student.calculateIBGradeLevel(grade);
                                 student.ibGrades.add(ibGrade);
-                                student.courseLevels.add("SL");  // default to SL
+                                student.courseLevels.add("SL"); // default to SL
                                 student.grades.add(grade);
                             }
                             break;
@@ -469,17 +470,24 @@ public class Person {
             System.out.println("  [ERROR] Grade data format error: " + e.getMessage());
         }
     }
-    
+
     // Convert IB grade to percentage
     static int ibToPercentage(int ibGrade) {
         switch (ibGrade) {
-            case 7: return 97;
-            case 6: return 90;
-            case 5: return 82;
-            case 4: return 72;
-            case 3: return 62;
-            case 2: return 52;
-            default: return 42;
+            case 7:
+                return 97;
+            case 6:
+                return 90;
+            case 5:
+                return 82;
+            case 4:
+                return 72;
+            case 3:
+                return 62;
+            case 2:
+                return 52;
+            default:
+                return 42;
         }
     }
 }

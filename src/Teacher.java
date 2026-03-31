@@ -3,20 +3,20 @@ import java.util.Scanner;
 
 // teacher user type in grade management system
 public class Teacher extends Person {
-    
+
     private static final Scanner scanner = new Scanner(System.in);
-    
+
     // default constructor
     public Teacher() {
         super();
         setRole("TEACHER");
     }
-    
+
     // constructor with username, password, and name
     public Teacher(String username, String password, String name) {
         super(username, password, name, "TEACHER");
     }
-    
+
     // show teacher menu and handle user choices
     public static boolean showTeacherMenu(Person currentUser, ArrayList<Student> students) {
         CLI.printHeader("Teacher Menu");
@@ -30,7 +30,7 @@ public class Teacher extends Person {
         System.out.println("  6. Logout");
         CLI.printSeparator('-');
         System.out.print("  Please choose: ");
-        
+
         int choice = 0;
         try {
             choice = Integer.parseInt(scanner.nextLine());
@@ -38,7 +38,7 @@ public class Teacher extends Person {
             System.out.println("\n  [ERROR] Please enter a valid number!");
             return false;
         }
-        
+
         switch (choice) {
             case 1:
                 addStudent(students);
@@ -63,32 +63,32 @@ public class Teacher extends Person {
         }
         return false;
     }
-    
+
     // add a new student to the list
     public static void addStudent(ArrayList<Student> students) {
         CLI.printHeader("Add Student");
         Student newStudent = new Student();
         newStudent.addStudentInfo();
-        
+
         for (Student s : students) {
             if (s.studentId == newStudent.studentId) {
                 System.out.println("\n  [ERROR] Student ID already exists!");
                 return;
             }
         }
-        
+
         // Also add to users list so the student can login
         Person personStudent = newStudent;
         users.add(personStudent);
-        
+
         students.add(newStudent);
-        
+
         // Save data after adding student
         Person.saveData();
-        
+
         System.out.println("\n  [SUCCESS] Student added successfully!");
     }
-    
+
     // add course and grade for a student
     public static void addGrade(ArrayList<Student> students) {
         CLI.printHeader("Add Course and Grade");
@@ -100,16 +100,16 @@ public class Teacher extends Person {
             System.out.println("\n  [ERROR] Invalid student ID!");
             return;
         }
-        
+
         Student targetStudent = findStudentById(studentId, students);
         if (targetStudent == null) {
             System.out.println("\n  [ERROR] Student not found!");
             return;
         }
-        
+
         targetStudent.addSubjectAndGrade();
     }
-    
+
     // view all student grades
     public static void viewAllGrades(ArrayList<Student> students) {
         CLI.printHeader("All Student Grades");
@@ -117,12 +117,12 @@ public class Teacher extends Person {
             System.out.println("  No student records!");
             return;
         }
-        
+
         for (Student student : students) {
             student.displayGrades();
         }
     }
-    
+
     // calculate and display student GPA
     public static void calculateStudentGPA(ArrayList<Student> students) {
         CLI.printHeader("Calculate Student GPA");
@@ -134,17 +134,17 @@ public class Teacher extends Person {
             System.out.println("\n  [ERROR] Invalid student ID!");
             return;
         }
-        
+
         Student targetStudent = findStudentById(studentId, students);
         if (targetStudent == null) {
             System.out.println("\n  [ERROR] Student not found!");
             return;
         }
-        
+
         System.out.println("\n  Student: " + CLI.truncate(targetStudent.getName(), CLI.CLI_WIDTH - 15));
         System.out.println("  GPA    : " + String.format("%.2f", targetStudent.calculateGPA()));
     }
-    
+
     // find a student by their ID
     private static Student findStudentById(int studentId, ArrayList<Student> students) {
         for (Student s : students) {
@@ -154,7 +154,7 @@ public class Teacher extends Person {
         }
         return null;
     }
-    
+
     // save all student data to files
     private static void saveAllData(ArrayList<Student> students) {
         Person.saveGrades(students);
